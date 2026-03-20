@@ -1,10 +1,8 @@
 import { createComparison, defaultRules } from "../lib/compare.js";
 
-// @todo: #4.3 — настроить компаратор
 const compare = createComparison(defaultRules);
 
 export function initFiltering(elements, indexes) {
-  // @todo: #4.1 — заполнить выпадающие списки опциями
   Object.keys(indexes).forEach((elementName) => {
     elements[elementName].append(
       ...Object.values(indexes[elementName]).map((name) => {
@@ -17,7 +15,6 @@ export function initFiltering(elements, indexes) {
   });
 
   return (data, state, action) => {
-    // @todo: #4.2 — обработать очистку поля
     if (action && action.name === "clear") {
       const field = action.dataset.field;
       const parent = action.parentElement;
@@ -35,11 +32,10 @@ export function initFiltering(elements, indexes) {
     const filterState = {
       date: state.date,
       customer: state.customer,
-      seller: state.searchBySeller,
+      seller: state.searchBySeller ?? state.seller,
       total: [state.totalFrom, state.totalTo],
     };
 
-    // @todo: #4.5 — отфильтровать данные используя компаратор
     return data.filter((row) => compare(row, filterState));
   };
 }
